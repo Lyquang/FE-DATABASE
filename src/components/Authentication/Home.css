@@ -1,0 +1,86 @@
+/* Home.css */
+
+.home-container {
+    min-height: 700px;
+    min-width: 600px;
+    background-color: #f7fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  /* Increase the width of the box to make it more spacious */
+  .home-box {
+    background-color: #fff;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 0.75rem;
+    padding: 3rem;
+    max-width: 45rem; /* Increased width for more space */
+    width: 100%;
+  }
+  
+  /* Title adjustments */
+  .home-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #2d3748;
+    margin-bottom: 2rem;
+  }
+  
+  .home-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Add more padding, increase width, and add margin between links */
+  .home-link {
+    display: block;
+    text-align: center;
+    padding: 1rem 2rem; /* Increased padding for larger buttons */
+    border-radius: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    color: white;
+    margin-bottom: 5px; /* Added 5px spacing between buttons */
+    width: 100%; /* Make buttons full-width inside the container */
+  }
+  
+  /* Button width for larger buttons */
+  .home-employee,
+  .home-manager,
+  .home-hr {
+    max-width: 100%; /* Buttons will take full available width */
+  }
+  
+  /* Employee button */
+  .home-employee {
+    background-color: #4299e1;
+  }
+  
+  .home-employee:hover {
+    background-color: #3182ce;
+  }
+  
+  /* Manager button */
+  .home-manager {
+    background-color: #48bb78;
+  }
+  
+  .home-manager:hover {
+    background-color: #38a169;
+  }
+  
+  /* HR button */
+  .home-hr {
+    background-color: #f56565;
+  }
+  
+  .home-hr:hover {
+    background-color: #e53e3e;
+  }
+  

@@ -1,0 +1,63 @@
+/* Container for the whole header */
+.custom-navbar {
+ // background-color: #0f6cbf;
+  background-color: #1e293b;
+  padding: 15px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Brand Styling */
+.navbar-brand {
+  font-weight: bold;
+  font-size: 24px;
+  color: white !important;
+  text-transform: uppercase;
+  padding-right: 80px;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: #cce7ff !important;
+}
+
+/* Navigation Links */
+.nav-link {
+  color: white !important;
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 20px;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #cce7ff !important;
+}
+
+/* Icons and Notifications */
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-icons .icon {
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.header-icons .icon:hover {
+  color: #cce7ff;
+}
+
+/* Profile Dropdown */
+.custom-navbar .dropdown-item {
+  color: #333 !important;
+  font-weight: 500;
+}
+
+.custom-navbar .dropdown-item:hover {
+  color: #0f6cbf !important;
+  background-color: #e0f0ff !important;
+}

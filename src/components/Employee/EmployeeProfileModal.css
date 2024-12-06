@@ -1,0 +1,28 @@
+.employee-profile-modal .modal-content {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.employee-profile-form {
+    padding: 1em;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.employee-profile-modal .btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.employee-profile-modal .modal-dialog {
+    max-width: 600px;
+}
+
+.employee-profile-modal .modal-header,
+.employee-profile-modal .modal-footer {
+    justify-content: center;
+}
+
+.employee-profile-modal .modal-body {
+    text-align: center;
+}

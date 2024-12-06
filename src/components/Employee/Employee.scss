@@ -1,0 +1,88 @@
+/* Add this CSS in your main CSS file or within a style tag in the component */
+.form-modal {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    z-index: 1000;
+}
+
+.bg-success {
+    background-color: #0C6478 !important;
+}
+
+.btn-danger {
+    background-color: #0C6478;
+    border-color: transparent;
+}
+
+.form-modal form label {
+    display: block;
+    margin: 10px 0;
+}
+
+.form-modal form input,
+.form-modal form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+}
+
+.form-modal button {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.form-modal .form-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.form-modal .form-buttons button {
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.manage-emp-container {
+    .emp-content {}
+}
+
+.modal-add-emp {
+    .img-preview {
+        height: 150px;
+        border: 1px dashed #ccc;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #ccc;
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+
+    .label-updload {
+        gap: 5px;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        padding: 3px 10px;
+        border-radius: 5px;
+        background: #eeeeee;
+        border: none;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #dcdcdc;
+        }
+    }
+}

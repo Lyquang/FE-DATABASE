@@ -1,0 +1,32 @@
+@keyframes slideIn {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.card {
+    animation: slideIn 0.9s ease forwards;
+    transform: translateY(20px);
+    opacity: 0;
+    margin-left: 10px;
+}
+
+.custom-modal .modal-content {
+    width: 90%;
+    max-width: 800px;
+    margin: auto;
+}
+
+.custom-ml {
+    margin-left: 4px;
+}
+
+/* .employee-list-row {
+    margin-left: 20px;
+} */
