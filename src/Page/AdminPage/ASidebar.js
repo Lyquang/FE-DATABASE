@@ -12,11 +12,6 @@ import { FaHome } from "react-icons/fa";
 import './ASidebar.scss';
 
 function ASidebar({ expanded, toggleSidebar }) {
-  // const [expanded, setExpanded] = useState(() => {
-  //   const savedState = localStorage.getItem('sidebarExpanded');
-  //   return savedState === null ? true : JSON.parse(savedState);
-  // });
-
 
   const [projectDropdown, setProjectDropdown] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -36,13 +31,6 @@ function ASidebar({ expanded, toggleSidebar }) {
     setProjectDropdown((prev) => !prev);
   };
 
-  // const toggleSidebar = () => {
-  //   setExpanded((prev) => {
-  //     const newExpandedState = !prev;
-  //     localStorage.setItem('sidebarExpanded', JSON.stringify(newExpandedState)); // Lưu vào localStorage
-  //     return newExpandedState;
-  //   });
-  // };
   return (
     <div className={`sidebar ${expanded ? 'expanded' : 'collapsed'}`}>
       <div className="sidebar-header">
@@ -90,19 +78,10 @@ function ASidebar({ expanded, toggleSidebar }) {
           <span className={`link-text ${expanded ? 'show' : ''}`}>Tiền lương và phúc lợi</span>
         </NavLink>
 
-        <NavLink to="admin-training" className="nav-link-side" activeClassName="active-link">
-          <GiTeamUpgrade />
-          <span className={`link-text ${expanded ? 'show' : ''}`}>Đào tạo</span>
-        </NavLink>
 
         <NavLink to="project" className="nav-link-side" activeClassName="active-link">
           <TfiStatsUp />
           <span className={`link-text ${expanded ? 'show' : ''}`}>Dự án</span>
-        </NavLink>
-
-        <NavLink to="chat" className="nav-link-side" activeClassName="active-link">
-          <BiChat />
-          <span className={`link-text ${expanded ? 'show' : ''}`}>Tin nhắn</span>
         </NavLink>
 
         <NavLink to="logout" className="nav-link-side" activeClassName="active-link">
@@ -111,17 +90,6 @@ function ASidebar({ expanded, toggleSidebar }) {
         </NavLink>
 
       </div>
-      {/* <div className="checkbox-section">
-        <label className="checkbox-label">
-          <input
-            type="checkbox"
-            checked={isLogoHidden}
-            onChange={toggleLogo}
-            className="checkbox-input"
-          />
-          <span className={`link-text ${expanded ? 'show' : ''}`}>Hide Logo</span>
-        </label>
-      </div> */}
     </div>
   );
 }

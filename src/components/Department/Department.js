@@ -7,10 +7,18 @@ import axios from "../utils/axiosCustomize";
 const Department = () => {
   const [departments, setDepartments] = useState([]);
   const [error, setError] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    managerId: "",
+    mspb: "",
+    ten: "",
+    mota: "",
+    nvquanly: "",
+  });
+
+  const [editData, setEditData] = useState({
+    mspb: "",
+    ten: "",
   });
 
   const fetchDepartments = async () => {
@@ -43,58 +51,91 @@ const Department = () => {
     }));
   };
 
-  const openForm = () => {
-    setShowForm(true);
+  const openCreateForm = () => {
+    setShowCreateForm(true);
     setFormData({
       name: "",
       managerId: "",
     });
   };
 
-  const closeForm = () => {
-    setShowForm(false);
+  const closeCreateForm = () => {
+    setShowCreateForm(false);
     setFormData({
       name: "",
       managerId: "",
     });
   };
 
+
+  const openEditForm = (department) => {
+    setFormData({
+      mspb: department.departmentId, // Gán đúng trường
+      ten: department.departmentName,
+    });
+    setShowEditForm(true);
+  };
+
+  
+  const closeEditForm = () => {
+        setShowEditForm(false);
+    };
+
+
+
+  //api thêm phong ban
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const payload = {
-        tenphongban: formData.name,
-        nv_quanly: formData.managerId || null,
-      };
-      const response = await postCreateNewDepartment(payload);
+      // Construct the payload from formData
+      const { mspb, mota, ten, nvquanly } = formData;
+  
+      // Make the API request
+      const response = await axios.post(
+        "http://localhost:8080/phongban/themphongban",
+        null,
+        {
+          params: { mspb, mota, ten, nvquanly },
+        }
+      );
+  
       if (response && response.data) {
+        alert(response.data.message || "Thêm phòng ban mới thành công!");
+  
+        // Update the department list with the new entry
         const newDepartment = {
-          departmentId: response.data.mspb,
-          departmentName: response.data.tenphongban,
-          employeeNumber: response.data.soluongnhanvien || 0,
-          managerId: response.data.nv_quanly || "Chưa có",
+          departmentId: mspb,
+          departmentName: ten,
+          description: mota,
+          managerId: nvquanly || "Chưa có",
+          employeeNumber: 0, // Default value as it's not provided
         };
+  
         setDepartments((prevDepartments) => [...prevDepartments, newDepartment]);
-        console.log("Department created successfully:", newDepartment);
       }
     } catch (err) {
-      setError(err.message);
       console.error("Error creating department:", err);
+      alert("Lỗi khi thêm phòng ban mới!");
     }
-    closeForm();
+    closeCreateForm();
   };
-
-  const deleteDepartment = async (id) => {
+  
+//api xoa phong ban
+  const deleteDepartment = async (mspb) => {
     if (window.confirm("Bạn có chắc chắn là xóa phòng ban này không?")) {
       try {
-        const response = await axios.delete(`http://localhost:8080/api/departments/delete`, {
-          params: { id },
+        const response = await axios.delete(`http://localhost:8080/phongban/xoaphongban`, {
+          params: { mspb },
         });
+  
         if (response.status === 200) {
+          const message = response.data.message || "Xóa thành công";
+          alert(message);
+  
+          // Remove the department from the local state
           setDepartments((prevDepartments) =>
-            prevDepartments.filter((dept) => dept.departmentId !== id)
+            prevDepartments.filter((dept) => dept.departmentId !== mspb)
           );
-          alert("Phòng ban đã được xóa thành công");
         } else {
           alert("Bị lỗi khi xóa phòng ban");
         }
@@ -103,6 +144,40 @@ const Department = () => {
         alert("An error occurred while deleting the department.");
       }
     }
+  };
+
+
+  const handleEditFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { mspb, ten } = formData; // Sử dụng formData để gửi API
+  
+      // Gửi API PUT
+      const response = await axios.put(
+        "http://localhost:8080/phongban/suaphongban",
+        null,
+        {
+          params: { mspb, ten },
+        }
+      );
+  
+      if (response && response.data) {
+        alert(response.data.message || "Sửa tên phòng ban thành công!");
+  
+        // Cập nhật danh sách phòng ban
+        setDepartments((prevDepartments) =>
+          prevDepartments.map((dept) =>
+            dept.departmentId === mspb
+              ? { ...dept, departmentName: ten } // Cập nhật tên mới
+              : dept
+          )
+        );
+      }
+    } catch (err) {
+      console.error("Lỗi khi sửa phòng ban:", err);
+      alert("Lỗi khi sửa phòng ban!");
+    }
+    closeEditForm();
   };
 
   return (
@@ -119,12 +194,13 @@ const Department = () => {
               <div className="department-actions">
                 <FaEdit
                   className="action-icon edit-icon"
-                  onClick={() => openForm(department)}
+                  onClick={() => openEditForm(department)}
                 />
                 <FaTrashAlt
                   className="action-icon delete-icon"
                   onClick={() => deleteDepartment(department.departmentId)}
                 />
+
               </div>
             </div>
             <div className="department-card-body">
@@ -137,46 +213,104 @@ const Department = () => {
           </div>
         ))}
       </div>
-      <button className="create-department-button" onClick={openForm}>
+      <button className="create-department-button" onClick={openCreateForm}>
         + Tạo phòng ban mới
       </button>
 
-      {showForm && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Tạo phòng ban mới</h3>
-            <form onSubmit={handleFormSubmit}>
-              <div className="form-group">
-                <label style={{ textAlign: "left", display: "block" }}>Tên phòng ban:</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleFormChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label style={{ textAlign: "left", display: "block" }}>Mã quản lý:</label>
-                <input
-                  type="text"
-                  name="managerId"
-                  value={formData.managerId}
-                  onChange={handleFormChange}
-                />
-              </div>
-              <div className="form-buttons">
-                <button type="submit" className="submit-button">
-                  Tạo mới
-                </button>
-                <button type="button" className="cancel-button" onClick={closeForm}>
-                  Hủy
-                </button>
-              </div>
-            </form>
-          </div>
+      {showCreateForm && (
+  <div className="modal">
+    <div className="modal-content">
+      <h3>Tạo phòng ban mới</h3>
+      <form onSubmit={handleFormSubmit}>
+        <div className="form-group">
+          <label style={{ textAlign: "left", display: "block" }}>Mã phòng ban (mspb):</label>
+          <input
+            type="text"
+            name="mspb"
+            value={formData.mspb}
+            onChange={handleFormChange}
+            required
+          />
         </div>
-      )}
+        <div className="form-group">
+          <label style={{ textAlign: "left", display: "block" }}>Tên phòng ban (ten):</label>
+          <input
+            type="text"
+            name="ten"
+            value={formData.ten}
+            onChange={handleFormChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label style={{ textAlign: "left", display: "block" }}>Mô tả (mota):</label>
+          <textarea
+            name="mota"
+            value={formData.mota}
+            onChange={handleFormChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label style={{ textAlign: "left", display: "block" }}>Mã quản lý (nvquanly):</label>
+          <input
+            type="text"
+            name="nvquanly"
+            value={formData.nvquanly}
+            onChange={handleFormChange}
+          />
+        </div>
+        <div className="form-buttons">
+          <button type="submit" className="submit-button">
+            Tạo mới
+          </button>
+          <button type="button" className="cancel-button" onClick={closeCreateForm}>
+            Hủy
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
+
+{showEditForm && (
+  <div className="modal">
+    <div className="modal-content">
+      <h3>Sửa ban mới</h3>
+      <form onSubmit={handleEditFormSubmit}>
+        <div className="form-group">
+          <label style={{ textAlign: "left", display: "block" }}>Mã phòng ban (mspb):</label>
+          <input
+            type="text"
+            name="mspb"
+            value={formData.mspb}
+            onChange={handleFormChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label style={{ textAlign: "left", display: "block" }}>Tên phòng ban (ten):</label>
+          <input
+            type="text"
+            name="ten"
+            value={formData.ten}
+            onChange={handleFormChange}
+            required
+          />
+        </div>
+        <div className="form-buttons">
+          <button type="submit" className="submit-button">
+            Lưu
+          </button>
+          <button type="button" className="cancel-button" onClick={closeEditForm}>
+            Hủy
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
