@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Department.scss";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { getAllDepartment, postCreateNewDepartment } from "../services/apiService";
+import { postCreateNewDepartment } from "../services/apiService";
 import axios from "../utils/axiosCustomize";
-
 
 const Department = () => {
   const [departments, setDepartments] = useState([]);
@@ -16,9 +15,15 @@ const Department = () => {
 
   const fetchDepartments = async () => {
     try {
-      const response = await getAllDepartment();
+      const response = await axios.get("http://localhost:8080/phongban/getAllPhongban");
       if (response && response.data) {
-        setDepartments(response.data.result); // Update to use "result" from API response
+        const transformedData = response.data.map((dept) => ({
+          departmentId: dept.mspb,
+          departmentName: dept.tenphongban,
+          employeeNumber: dept.soluongnhanvien,
+          managerId: dept.nv_quanly,
+        }));
+        setDepartments(transformedData);
       }
     } catch (err) {
       setError(err.message);
@@ -56,57 +61,49 @@ const Department = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-  
     try {
       const payload = {
-        departmentName: formData.name,
-        managerId: formData.managerId ? Number(formData.managerId) : null, // Ensure managerId is numeric or null
+        tenphongban: formData.name,
+        nv_quanly: formData.managerId || null,
       };
-  
       const response = await postCreateNewDepartment(payload);
-  
-      if (response && response.data && response.data.result) {
-        // Add the newly created department to the state
-        setDepartments((prevDepartments) => [
-          ...prevDepartments,
-          response.data.result,
-        ]);
-        console.log("Department created successfully:", response.data.result);
+      if (response && response.data) {
+        const newDepartment = {
+          departmentId: response.data.mspb,
+          departmentName: response.data.tenphongban,
+          employeeNumber: response.data.soluongnhanvien || 0,
+          managerId: response.data.nv_quanly || "Chưa có",
+        };
+        setDepartments((prevDepartments) => [...prevDepartments, newDepartment]);
+        console.log("Department created successfully:", newDepartment);
       }
     } catch (err) {
       setError(err.message);
       console.error("Error creating department:", err);
     }
-  
     closeForm();
   };
-  
-
 
   const deleteDepartment = async (id) => {
-      if (window.confirm(" Bạn có chắc chắn là xóa phòng ban này không ?")) {
-          try {
-              // API call to delete the department
-              const response = await axios.delete(`http://localhost:8080/api/departments/delete`, {
-                  params: { id },
-              });
-  
-              // Update state if the delete request was successful
-              if (response.status === 200) {
-                  setDepartments((prevDepartments) =>
-                      prevDepartments.filter((dept) => dept.departmentId !== id)
-                  );
-                  alert("Phòng ban đã được xóa thành công");
-              } else {
-                  alert("Bị lỗi khi xóa phòng ban");
-              }
-          } catch (error) {
-              console.error("Error deleting the department:", error);
-              alert("An error occurred while deleting the department.");
-          }
+    if (window.confirm("Bạn có chắc chắn là xóa phòng ban này không?")) {
+      try {
+        const response = await axios.delete(`http://localhost:8080/api/departments/delete`, {
+          params: { id },
+        });
+        if (response.status === 200) {
+          setDepartments((prevDepartments) =>
+            prevDepartments.filter((dept) => dept.departmentId !== id)
+          );
+          alert("Phòng ban đã được xóa thành công");
+        } else {
+          alert("Bị lỗi khi xóa phòng ban");
+        }
+      } catch (error) {
+        console.error("Error deleting the department:", error);
+        alert("An error occurred while deleting the department.");
       }
+    }
   };
-  
 
   return (
     <div className="departments-container">
@@ -134,7 +131,7 @@ const Department = () => {
               <p><strong>Mã phòng ban:</strong> {department.departmentId}</p>
               <p><strong>Số lượng nhân viên:</strong> {department.employeeNumber}</p>
               <p>
-                <strong>Mã quản lý:</strong> {department.managerId ? department.managerId : "Chưa có"}
+                <strong>Mã quản lý:</strong> {department.managerId || "Chưa có"}
               </p>
             </div>
           </div>

@@ -95,9 +95,9 @@ function ASidebar({ expanded, toggleSidebar }) {
           <span className={`link-text ${expanded ? 'show' : ''}`}>Đào tạo</span>
         </NavLink>
 
-        <NavLink to="statistic" className="nav-link-side" activeClassName="active-link">
+        <NavLink to="project" className="nav-link-side" activeClassName="active-link">
           <TfiStatsUp />
-          <span className={`link-text ${expanded ? 'show' : ''}`}>Thống kê</span>
+          <span className={`link-text ${expanded ? 'show' : ''}`}>Dự án</span>
         </NavLink>
 
         <NavLink to="chat" className="nav-link-side" activeClassName="active-link">

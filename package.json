@@ -11,6 +11,7 @@
     "axios": "^0.27.2",
     "bootstrap": "5.2.0",
     "chart.js": "^4.4.6",
+    "cors": "^2.8.5",
     "icofont": "^1.0.0",
     "lucide-react": "^0.263.1",
     "phosphor-react": "^1.4.1",

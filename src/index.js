@@ -67,10 +67,11 @@ root.render(
 
         <Route exact path="/login/admin" element={<AdminPage />}>
           <Route index element={<ADashboard />}></Route>
-          <Route path="employee" element={<Employee />} />
+          <Route path="employee" element={<Employee/>} />
           <Route path="admin-attendance" element={<AdminAttendance />} />
           <Route path="admin-salary" element={<AdminSalary />} />
           <Route path="department" element={<Department />} />
+          <Route path="project" element={<ManagerProject />} />
 
           <Route path="admin-training" element={<AdminTraining />} />
           <Route path="statistic" element={<Statistic />} />
@@ -100,7 +101,7 @@ root.render(
           {/* <Route path="salary" element={<Salary />} /> */}
 
           <Route path="department" element={<Department />} />
-          <Route path="project" element={<ManagerProject />} />
+        
           <Route path="training" element={<EmployeeTraining />} />
           <Route path="chat" element={<EmployeeChat />} />
         </Route>
