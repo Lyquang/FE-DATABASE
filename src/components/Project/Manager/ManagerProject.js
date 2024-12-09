@@ -104,7 +104,7 @@ const ManagerProject = () => {
     return (
         <div className="manager-projects">
             <div className="header d-flex align-items-center justify-content-between">
-                <h2>Quản lý dự án</h2>
+                <h2>Quản lý dự án khacwcs tí</h2>
                 <div className="action-buttons">
                     <button onClick={handleCreateProjectClick} className="btn btn-primary">
                         Tạo project
