@@ -42,7 +42,7 @@ import AdminAttendance from './components/Attendance/AdminAttendance';
 //import manager
 import ManagerPage from './Page/ManagerPage/ManagerPage';
 import ManagerDevideTask from './components/Project/Manager/ManagerDivideTask';
-import ManagerProject from './components/Project/Manager/ManagerProject'
+import AdminProject from './components/Project/Admin/AdminProject';
 
 
 // import employee
@@ -71,7 +71,7 @@ root.render(
           <Route path="admin-attendance" element={<AdminAttendance />} />
           <Route path="admin-salary" element={<AdminSalary />} />
           <Route path="department" element={<Department />} />
-          <Route path="project" element={<ManagerProject />} />
+          <Route path="project" element={<AdminProject />} />
 
           <Route path="admin-training" element={<AdminTraining />} />
           <Route path="statistic" element={<Statistic />} />
