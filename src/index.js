@@ -55,6 +55,7 @@ import EmployeeAttendance from './components/Attendance/EmployeeAttendance';
 import EmployeeTraining from './components/Training/EmployeeTraining';
 import EmployeeChat from './components/Chat/EmployeeChat';
 import Participation from './components/Project/Employee/Participation';
+import Query from './components/Query/Query';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -76,6 +77,7 @@ root.render(
           <Route path="admin-training" element={<AdminTraining />} />
           <Route path="statistic" element={<Statistic />} />
           <Route path="chat" element={<EmployeeChat />} />
+          <Route path ="query" element={<Query />}></Route>
         </Route>
 
         <Route exact path="/login/employee" element={<EmployeePage />}>
