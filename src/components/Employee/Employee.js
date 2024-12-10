@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AddEmployee from "./AddEmployee.js";
+import AddEmployee1 from "./AddEmployee1.js";
+import ChangetoOfficial from "./ChangetoOfficial.js";
+import ChangeDep from "./ChangeDep.js";
 import "./Employee.css";
+
 
 const Employee = () => {
     const [employees, setEmployees] = useState([]);
     const [error, setError] = useState(null);
     const [showAddForm, setShowAddForm] = useState(false);
+    const [showAddForm1, setShowAddForm1] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
+    const [showAddForm2, setShowAddForm2] = useState(false);
+    const [showAddForm3, setShowAddForm3] = useState(false);
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [currentPage, setCurrentPage] = useState(1); // Keep track of current page
     const [recordsPerPage, setRecordsPerPage] = useState(10); // Records per page
+    const [showModal, setShowModal] = useState(false); // State to toggle popup visibility
 
     // Fetch employees from the API
     const fetchEmployees = async () => {
@@ -98,14 +106,60 @@ const Employee = () => {
 
     return (
         <div className="employee-list">
+
             <div className="header-row">
                 <h2>Danh sách nhân viên</h2>
-                <button
+                {/* <button
                     className="add-employee-button"
                     onClick={() => setShowAddForm(true)}
                 >
-                    + Thêm nhân viên
+                    + Thêm nhân viên chính thức
                 </button>
+                <button
+                    className="add-employee-button"
+                    onClick={() => setShowAddForm1(true)}
+                >
+                    + Thêm nhân viên thử việc
+                </button>
+                <button
+                    className="add-employee-button"
+                    onClick={() => setShowAddForm2(true)}
+                >
+                Chuyển lên chính thức
+                </button>
+                <button
+                    className="add-employee-button"
+                    onClick={() => setShowAddForm3(true)}
+                >
+                Chuyển phòng
+                </button> */}
+
+<div className="button-group">
+    {/* Thêm Nhân viên Dropdown */}
+    <div className="dropdown">
+        <button className="add-employee-button">
+            Thêm Nhân viên
+        </button>
+        <div className="dropdown-content">
+            <button onClick={() => setShowAddForm(true)}>+ Thêm nhân viên chính thức</button>
+            <button onClick={() => setShowAddForm1(true)}>+ Thêm nhân viên thử việc</button>
+        </div>
+    </div>
+
+    {/* Chuyển Đổi Dropdown */}
+    <div className="dropdown">
+        <button className="add-employee-button">
+            Chuyển Đổi
+        </button>
+        <div className="dropdown-content">
+            <button onClick={() => setShowAddForm2(true)}>Chuyển lên chính thức</button>
+            <button onClick={() => setShowAddForm3(true)}>Chuyển phòng</button>
+        </div>
+    </div>
+</div>
+
+
+            
                 <div className="pagination-controls">
                     <select onChange={handlePageSizeChange} value={recordsPerPage}>
                         <option value={5}>5 Records per page</option>
@@ -191,6 +245,10 @@ const Employee = () => {
                 </button>
             </div>
             {showAddForm && <AddEmployee onClose={() => setShowAddForm(false)} refreshEmployees={fetchEmployees} />}
+            {showAddForm1 && <AddEmployee1 onClose={() => setShowAddForm1(false)} refreshEmployees={fetchEmployees} />}
+            {showAddForm2 && <ChangetoOfficial onClose={() => setShowAddForm2(false)} refreshEmployees={fetchEmployees} />}
+            {showAddForm3 && <ChangeDep onClose={() => setShowAddForm3(false)} refreshEmployees={fetchEmployees} />}
+            
             {showEditForm && (
                 <EditEmployeeForm
                     employee={selectedEmployee}
@@ -276,6 +334,3 @@ const EditEmployeeForm = ({ employee, onClose, onSave }) => {
 };
 
 export default Employee;
-// đkjksdjkfjksdl
-// clm
-//dcm

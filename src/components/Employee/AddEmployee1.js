@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./AddEmployee.css";
 
-const AddEmployee = ({ onClose, refreshEmployees }) => {
+const AddEmployee1 = ({ onClose, refreshEmployees }) => {
     const [formData, setFormData] = useState({
         msnv: "",
         hovaten: "",
@@ -10,10 +10,8 @@ const AddEmployee = ({ onClose, refreshEmployees }) => {
         gioitinh: "",
         cccd: "",
         masophongban: "",
-        bhxh: "",
         nguoiquanly: "",
         startdate: "",
-        chucvu: "",
         lcb: "",
         sogiotoithieu: "",
     });
@@ -29,25 +27,53 @@ const AddEmployee = ({ onClose, refreshEmployees }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const queryParams = new URLSearchParams(formData).toString();
-            const response = await axios.post(`http://localhost:8080/NVCT/them?${queryParams}`);
+            const queryParams = new URLSearchParams({
+                msnv: formData.msnv,
+                hovaten: formData.hovaten,
+                ngaysinh: formData.ngaysinh,
+                gioitinh: formData.gioitinh,
+                cccd: formData.cccd,
+                masophongban: formData.masophongban,
+                nguoiquanly1: formData.nguoiquanly, // updated parameter name
+                startdate: formData.startdate,
+                lcb: formData.lcb,
+                sogiotoithieu: formData.sogiotoithieu,
+            }).toString();
+    
+            const response = await axios.post(`http://localhost:8080/NVTV/them?${queryParams}`);
+    
             if (response.status === 200) {
-                alert("Thêm nhân viên thành công!");
+                // Log or display the API response body
+                console.log("API Response:", response.data);
+    
+                // Display response body in an alert or as a UI message
+                alert(`Thêm nhân viên thành công! Response: ${JSON.stringify(response.data)}`);
+                
                 refreshEmployees();
                 onClose();
             } else {
                 alert("Lỗi khi thêm nhân viên!");
             }
         } catch (err) {
-            console.error("Error adding employee:", err);
-            alert("Lỗi khi thêm nhân viên!");
+            if (err.response) {
+                // Log and display the error message from the API
+                console.error("Error Response:", err.response.data);
+                alert(`Lỗi: ${err.response.data || "Đã xảy ra lỗi!"}`);
+            } else {
+                // Handle other errors (e.g., network issues)
+                console.error("Error adding employee:", err);
+                alert("Đã xảy ra lỗi khi thêm nhân viên.");
+            }
         }
     };
+    
+    
+    
 
     return (
         <div className="add-employee-modal">
             <div className="modal-content">
-                <h3>Thêm nhân viên chính thức </h3>
+                <h3>Thêm nhân viên thử việc </h3>
                 <form onSubmit={handleSubmit} className="employee-form">
                     <div className="form-row">
                         <div className="form-group">
@@ -117,16 +143,6 @@ const AddEmployee = ({ onClose, refreshEmployees }) => {
                     </div>
                     <div className="form-row">
                         <div className="form-group">
-                            <label>BHXH:</label>
-                            <input
-                                type="text"
-                                name="bhxh"
-                                value={formData.bhxh}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
                             <label>Người quản lý:</label>
                             <input
                                 type="text"
@@ -136,24 +152,12 @@ const AddEmployee = ({ onClose, refreshEmployees }) => {
                                 required
                             />
                         </div>
-                    </div>
-                    <div className="form-row">
                         <div className="form-group">
                             <label>Ngày bắt đầu:</label>
                             <input
                                 type="text"
                                 name="startdate"
                                 value={formData.startdate}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Chức vụ:</label>
-                            <input
-                                type="text"
-                                name="chucvu"
-                                value={formData.chucvu}
                                 onChange={handleInputChange}
                                 required
                             />
@@ -195,4 +199,4 @@ const AddEmployee = ({ onClose, refreshEmployees }) => {
     );
 };
 
-export default AddEmployee;
+export default AddEmployee1;
