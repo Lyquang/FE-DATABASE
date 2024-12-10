@@ -6,6 +6,7 @@ import ChangetoOfficial from "./ChangetoOfficial.js";
 import ChangeDep from "./ChangeDep.js";
 import AddPhoneForm from "./AddPhoneForm.js";
 import AddEmailForm from "./AddEmailForm.js";
+import AddAddressForm from "./AddAddressForm.js";
 import "./Employee.css";
 
 
@@ -21,12 +22,14 @@ const Employee = () => {
     const [showAddForm2, setShowAddForm2] = useState(false);
     const [showAddForm3, setShowAddForm3] = useState(false);
     const [showAddPhoneForm, setShowAddPhoneForm] = useState(false);
-    const [showAddEmailForm, setShowAddEmailForm] = useState(false);
+    const [showAddEmailForm, setShowAddEmailForm] = useState(false); // State to control popup visibility
+
     const [showAddressForm, setShowAddressForm] = useState(false);
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [currentPage, setCurrentPage] = useState(1); // Keep track of current page
     const [recordsPerPage, setRecordsPerPage] = useState(10); // Records per page
     const [showModal, setShowModal] = useState(false); // State to toggle popup visibility
+ 
 
     // Fetch employees from the API
     const fetchEmployees = async () => {
@@ -39,6 +42,14 @@ const Employee = () => {
             console.error("Error fetching employees:", err);
             setError("Failed to load employee data. Please try again later.");
         }
+    };
+
+    const handleOpenAddEmailForm = () => {
+        setShowAddEmailForm(true); // Show the popup
+    };
+
+    const handleCloseAddEmailForm = () => {
+        setShowAddEmailForm(false); // Close the popup
     };
 
     // Delete an employee
@@ -124,8 +135,8 @@ const Employee = () => {
             Thêm Nhân viên
         </button>
         <div className="dropdown-content">
-            <button onClick={() => setShowAddForm(true)}>+ Thêm nhân viên chính thức</button>
-            <button onClick={() => setShowAddForm1(true)}>+ Thêm nhân viên thử việc</button>
+            <button onClick={() => setShowAddForm(true)}>Thêm nhân viên chính thức</button>
+            <button onClick={() => setShowAddForm1(true)}>Thêm nhân viên thử việc</button>
         </div>
     </div>
 
@@ -243,8 +254,14 @@ const Employee = () => {
             {showAddForm2 && <ChangetoOfficial onClose={() => setShowAddForm2(false)} refreshEmployees={fetchEmployees} />}
             {showAddForm3 && <ChangeDep onClose={() => setShowAddForm3(false)} refreshEmployees={fetchEmployees} />}
             {showAddPhoneForm && <AddPhoneForm onClose={() => setShowAddPhoneForm(false)} refreshEmployees={fetchEmployees} />}
-            {showAddEmailForm && <AddEmailForm onClose={() => setShowAddEmailForm(false)} refreshEmployees={fetchEmployees} />}
-            {/* {showAddressForm && <AddAddressForm onClose={() => setShowAddressForm(false)} refreshEmployees={fetchEmployees} />} */}
+            {showAddEmailForm && (
+                <AddEmailForm
+                    onClose={handleCloseAddEmailForm}
+                    refreshEmployees={fetchEmployees}
+                />
+            )}
+
+            {showAddressForm && <AddAddressForm onClose={() => setShowAddressForm(false)} refreshEmployees={fetchEmployees} />}
             
             {/* {showAddPhoneForm && selectedEmployee && (
             <AddPhoneForm

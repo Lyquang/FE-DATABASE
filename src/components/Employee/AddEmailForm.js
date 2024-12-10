@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./AddPhoneForm.css"; // You can keep the same styling if it's suitable
+import "./AddPhoneForm.css"; // Keep the same styling if it's suitable
 
 const AddEmailForm = ({ onClose, refreshEmployees }) => {
     const [msnv, setMsnv] = useState("");  // State for msnv

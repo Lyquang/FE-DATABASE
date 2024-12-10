@@ -1,156 +1,153 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CheckCircle, X, Clock } from 'phosphor-react';
 import './AdminAttendance.scss';
 
 const AdminAttendance = () => {
-    const [employees, setEmployees] = useState([]);
-    const [selectedMonth, setSelectedMonth] = useState(11);
-    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-    const [selectedDateInfo, setSelectedDateInfo] = useState(null);
+    const [attendanceRecords, setAttendanceRecords] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
+    const [filterMonth, setFilterMonth] = useState('');
+    const [filterYear, setFilterYear] = useState('');
+    const [filterEmployeeId, setFilterEmployeeId] = useState(''); // New state for employee ID filter
 
-    const fetchAttendanceData = async (month, year) => {
-        setLoading(true);
-        setError(null);
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // Number of records per page
 
-        try {
-            const response = await axios.get(`http://localhost:8080/api/attendance/month-year`, {
-                params: { month, year },
-            });
-
-            const { code, result } = response.data;
-            if (code === 1000) {
-                const transformedData = result.map(employee => ({
-                    id: employee.employeeCode.toString(),
-                    name: employee.employeeName,
-                    attendance: employee.attendanceRecords.map(record => ({
-                        work_date: record.attendanceDate,
-                        attendanceType: record.attendanceResult.replace(/ /g, '_').toLowerCase(),
-                    })),
-                }));
-                setEmployees(transformedData);
-            } else {
-                setError('Failed to fetch attendance records.');
-            }
-        } catch (err) {
-            setError('Error while fetching attendance data.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    // Fetch attendance data from API
     useEffect(() => {
-        fetchAttendanceData(selectedMonth, selectedYear);
-    }, [selectedMonth, selectedYear]);
-
-    const getDaysInMonth = (month, year) => new Date(year, month, 0).getDate();
-    const filteredDays = Array.from({ length: getDaysInMonth(selectedMonth, selectedYear) }, (_, i) => i + 1);
-
-    const handleDateClick = async (employeeCode, date) => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/attendance/date`, {
-                params: { code: employeeCode, date },
-            });
-
-            const { code, result } = response.data;
-            if (code === 1000) {
-                setSelectedDateInfo(result);
-            } else {
-                setSelectedDateInfo({ error: 'Ngày đó nhân viên này vắng không phép' });
+        const fetchAttendanceData = async () => {
+            setLoading(true);
+            setError('');
+            try {
+                const response = await axios.get(
+                    'http://localhost:8080/bangchamcong-bangluong/getAll'
+                );
+                const data = response.data || [];
+                setAttendanceRecords(data);
+            } catch (err) {
+                setError('Error fetching attendance data. Please try again.');
+                console.error(err);
+            } finally {
+                setLoading(false);
             }
-        } catch (err) {
-            setSelectedDateInfo({ error: 'Ngày đó nhân viên này vắng không phép' });
-        }
+        };
+        fetchAttendanceData();
+    }, []);
+
+    // Filter attendance data based on month, year, and employee ID
+    const filteredAttendance = attendanceRecords.filter((record) => {
+        const monthMatch = filterMonth ? record.bangChamCongKey.thang === parseInt(filterMonth) : true;
+        const yearMatch = filterYear ? record.bangChamCongKey.nam === parseInt(filterYear) : true;
+        const employeeIdMatch = filterEmployeeId ? record.bangChamCongKey.msnv.includes(filterEmployeeId) : true;
+        return monthMatch && yearMatch && employeeIdMatch;
+    });
+
+    // Pagination calculations
+    const totalPages = Math.ceil(filteredAttendance.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const visibleAttendance = filteredAttendance.slice(startIndex, endIndex);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
     };
-
-    const closeDateInfo = () => setSelectedDateInfo(null);
-
-    if (loading) return <div className="text-center mt-4">Loading attendance data...</div>;
-    if (error) return <div className="text-center mt-4 text-danger">{error}</div>;
 
     return (
         <div className="admin-attendance">
-            <div className="header">
-                <h2 className="title">Chấm công</h2>
-                <div className="filters">
-                    <label>Chọn tháng:</label>
-                    <select value={selectedMonth} onChange={(e) => setSelectedMonth(parseInt(e.target.value))}>
-                        {[...Array(12).keys()].map(i => (
-                            <option key={i + 1} value={i + 1}>{i + 1}</option>
-                        ))}
-                    </select>
-                    <label>Chọn năm:</label>
-                    <input
-                        type="number"
-                        value={selectedYear}
-                        onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                    />
-                </div>
+            <h3 className="title">Bảng chấm công của nhân viên</h3>
+
+            {/* Filters for Month, Year, and Employee ID */}
+            <div className="filters">
+                    <div className="filter-group">
+                        <label htmlFor="month">Tháng:</label>
+                        <select
+                            id="month"
+                            value={filterMonth}
+                            onChange={(e) => setFilterMonth(e.target.value)}
+                        >
+                            <option value="">Tất cả</option>
+                            {[...Array(12).keys()].map((m) => (
+                                <option key={m + 1} value={m + 1}>
+                                    {m + 1}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="filter-group">
+                        <label htmlFor="year">Năm:</label>
+                        <select
+                            id="year"
+                            value={filterYear}
+                            onChange={(e) => setFilterYear(e.target.value)}
+                        >
+                            <option value="">Tất cả</option>
+                            {[...new Set(attendanceRecords.map((r) => r.bangChamCongKey.nam))].map((year) => (
+                                <option key={year} value={year}>
+                                    {year}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="filter-group">
+                        <label htmlFor="employeeId">Mã nhân viên:</label>
+                        <input
+                            id="employeeId"
+                            type="text"
+                            value={filterEmployeeId}
+                            onChange={(e) => setFilterEmployeeId(e.target.value)}
+                            placeholder="Nhập mã nhân viên"
+                        />
+                    </div>
             </div>
 
-            {employees.length === 0 ? (
-                <div className="no-data">Không có dữ liệu điểm danh.</div>
-            ) : (
-                <div className="attendance-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tên nhân viên</th>
-                                {filteredDays.map(day => (
-                                    <th key={day}>{day}</th>
-                                ))}
+
+            {/* Error and Loading */}
+            {loading && <p>Đang tải dữ liệu...</p>}
+            {error && <p className="error">{error}</p>}
+
+            {/* Attendance Table */}
+            <div className="attendance-table">
+                <table className="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Mã nhân viên</th>
+                            <th>Tên nhân viên</th>
+                            <th>Tháng</th>
+                            <th>Năm</th>
+                            <th>Số giờ hiện tại</th>
+                            <th>Số giờ tối thiểu</th>
+                            <th>Số giờ làm thêm</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {visibleAttendance.map((record, index) => (
+                            <tr key={index}>
+                                <td>{record.bangChamCongKey.msnv}</td>
+                                <td>{record.nhanVien.hoten}</td>
+                                <td>{record.bangChamCongKey.thang}</td>
+                                <td>{record.bangChamCongKey.nam}</td>
+                                <td>{record.sogioHienTai}</td>
+                                <td>{record.sogioToiThieu}</td>
+                                <td>{record.sogioLamThem}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {employees.map(employee => (
-                                <tr key={employee.id}>
-                                    <td className="employee-info">
-                                        <span>{employee.name}</span>
-                                    </td>
-                                    {filteredDays.map(day => {
-                                        const attendanceEntry = employee.attendance.find(a => new Date(a.work_date).getDate() === day);
-                                        const status = attendanceEntry ? attendanceEntry.attendanceType : "absence";
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
-                                      const dateString = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-
-                                        return (
-                                            <td
-                                                key={day}
-                                                className={`status ${status}`}
-                                               onClick={() => handleDateClick(employee.id, dateString)}
-                                            >
-                                                {status === "full_day_work" && <CheckCircle size={20} />}
-                                                {status === "half_day_work" && <Clock size={20} />}
-                                                {status === "absence" && <X size={20} />}
-                                            </td>
-                                        );
-                                    })}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
-
-            {selectedDateInfo && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h4>Chi tiết ngày làm việc</h4>
-                        {selectedDateInfo.error ? (
-                            <p className="error">{selectedDateInfo.error}</p>
-                        ) : (
-                            <ul>
-                                <li><strong>Giờ vào làm:</strong> {selectedDateInfo.checkInTime}</li>
-                                <li><strong>Giờ ra về:</strong> {selectedDateInfo.checkOutTime}</li>
-                                <li><strong>Khoảng thời gian:</strong> {selectedDateInfo.duration}</li>
-                            </ul>
-                        )}
-                        <button className="close-btn" onClick={closeDateInfo}>Đóng lại</button>
-                    </div>
-                </div>
-            )}
+            {/* Pagination Controls */}
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                        key={i + 1}
+                        className={`page-button ${currentPage === i + 1 ? 'active' : ''}`}
+                        onClick={() => handlePageChange(i + 1)}
+                    >
+                        {i + 1}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 };

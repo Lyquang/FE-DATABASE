@@ -9,7 +9,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // import Employee from './components/Employee/Employee';
 
-import Attendance from './components/Attendance/EmployeeAttendance';
 
 // import AdminAttendance from './components/Attendance/AdminAttendance';
 
@@ -51,7 +50,7 @@ import Employee from './components/Employee/Employee';
 import EDashboard from './Page/EmployeePage/EDashboard';
 import SubmitTask from './components/Project/Employee/SubmitTask';
 import EmployeeInfor from './components/Information/EmployeeInfor';
-import EmployeeAttendance from './components/Attendance/EmployeeAttendance';
+
 import EmployeeTraining from './components/Training/EmployeeTraining';
 import EmployeeChat from './components/Chat/EmployeeChat';
 import Participation from './components/Project/Employee/Participation';
@@ -84,7 +83,7 @@ root.render(
 
           <Route index element={<EDashboard />}></Route>
           <Route path="infor" element={<EmployeeInfor />} />
-          <Route path="attendance" element={<EmployeeAttendance />} />
+          
           {/* <Route path="salary" element={<Salary />}/>
                     <Route path="department" element={<Department />}/> */}
           {/* <Route path="project" element={<Project />} /> */}
@@ -98,7 +97,7 @@ root.render(
 
           {/* <Route index element={<Dashboard />}></Route> */}
           <Route path="infor" element={<EmployeeInfor />} />
-          <Route path="attendance" element={<EmployeeAttendance />} />
+
 
           {/* <Route path="salary" element={<Salary />} /> */}
 
