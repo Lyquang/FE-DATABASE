@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./AddPhoneForm.css";
+import "./UpAddressForm.css";
 
 const UpAddressForm = ({ onClose, refreshAddresses }) => {
     const [msnv, setMsnv] = useState("");
@@ -66,39 +66,45 @@ const UpAddressForm = ({ onClose, refreshAddresses }) => {
                         <label>Mã nhân viên:</label>
                         <input type="text" value={msnv} onChange={(e) => setMsnv(e.target.value)} required />
                     </div>
-                    <h4>Địa chỉ cũ</h4>
-                    <div className="form-group">
-                        <label>Số nhà:</label>
-                        <input type="text" value={oldSonha} onChange={(e) => setOldSonha(e.target.value)} required />
-                    </div>
-                    <div className="form-group">
-                        <label>Tên đường:</label>
-                        <input type="text" value={oldTenduong} onChange={(e) => setOldTenduong(e.target.value)} required />
-                    </div>
-                    <div className="form-group">
-                        <label>Phường:</label>
-                        <input type="text" value={oldPhuong} onChange={(e) => setOldPhuong(e.target.value)} required />
-                    </div>
-                    <div className="form-group">
-                        <label>Tỉnh/Thành phố:</label>
-                        <input type="text" value={oldTinhthanhpho} onChange={(e) => setOldTinhthanhpho(e.target.value)} required />
-                    </div>
-                    <h4>Địa chỉ mới</h4>
-                    <div className="form-group">
-                        <label>Số nhà:</label>
-                        <input type="text" value={newSonha} onChange={(e) => setNewSonha(e.target.value)} required />
-                    </div>
-                    <div className="form-group">
-                        <label>Tên đường:</label>
-                        <input type="text" value={newTenduong} onChange={(e) => setNewTenduong(e.target.value)} required />
-                    </div>
-                    <div className="form-group">
-                        <label>Phường:</label>
-                        <input type="text" value={newPhuong} onChange={(e) => setNewPhuong(e.target.value)} required />
-                    </div>
-                    <div className="form-group">
-                        <label>Tỉnh/Thành phố:</label>
-                        <input type="text" value={newTinhthanhpho} onChange={(e) => setNewTinhthanhpho(e.target.value)} required />
+                    <div className="address-container">
+                        <div className="old-address">
+                            <h4>Địa chỉ cũ</h4>
+                            <div className="form-group">
+                                <label>Số nhà:</label>
+                                <input type="text" value={oldSonha} onChange={(e) => setOldSonha(e.target.value)} required />
+                            </div>
+                            <div className="form-group">
+                                <label>Tên đường:</label>
+                                <input type="text" value={oldTenduong} onChange={(e) => setOldTenduong(e.target.value)} required />
+                            </div>
+                            <div className="form-group">
+                                <label>Phường:</label>
+                                <input type="text" value={oldPhuong} onChange={(e) => setOldPhuong(e.target.value)} required />
+                            </div>
+                            <div className="form-group">
+                                <label>Tỉnh/Thành phố:</label>
+                                <input type="text" value={oldTinhthanhpho} onChange={(e) => setOldTinhthanhpho(e.target.value)} required />
+                            </div>
+                        </div>
+                        <div className="new-address">
+                            <h4>Địa chỉ mới</h4>
+                            <div className="form-group">
+                                <label>Số nhà:</label>
+                                <input type="text" value={newSonha} onChange={(e) => setNewSonha(e.target.value)} required />
+                            </div>
+                            <div className="form-group">
+                                <label>Tên đường:</label>
+                                <input type="text" value={newTenduong} onChange={(e) => setNewTenduong(e.target.value)} required />
+                            </div>
+                            <div className="form-group">
+                                <label>Phường:</label>
+                                <input type="text" value={newPhuong} onChange={(e) => setNewPhuong(e.target.value)} required />
+                            </div>
+                            <div className="form-group">
+                                <label>Tỉnh/Thành phố:</label>
+                                <input type="text" value={newTinhthanhpho} onChange={(e) => setNewTinhthanhpho(e.target.value)} required />
+                            </div>
+                        </div>
                     </div>
                     <div className="form-buttons">
                         <button type="submit" className="submit-button">

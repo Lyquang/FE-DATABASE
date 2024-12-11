@@ -8,11 +8,11 @@ const AdminAttendance = () => {
     const [error, setError] = useState('');
     const [filterMonth, setFilterMonth] = useState('');
     const [filterYear, setFilterYear] = useState('');
-    const [filterEmployeeId, setFilterEmployeeId] = useState(''); // New state for employee ID filter
+    const [filterEmployeeId, setFilterEmployeeId] = useState('');
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10; // Number of records per page
+    const itemsPerPage = 10;
 
     // Fetch attendance data from API
     useEffect(() => {
@@ -20,9 +20,7 @@ const AdminAttendance = () => {
             setLoading(true);
             setError('');
             try {
-                const response = await axios.get(
-                    'http://localhost:8080/bangchamcong-bangluong/getAll'
-                );
+                const response = await axios.get('http://localhost:8080/bangchamcong-bangluong/getAll');
                 const data = response.data || [];
                 setAttendanceRecords(data);
             } catch (err) {
@@ -35,11 +33,11 @@ const AdminAttendance = () => {
         fetchAttendanceData();
     }, []);
 
-    // Filter attendance data based on month, year, and employee ID
+    // Filter attendance data
     const filteredAttendance = attendanceRecords.filter((record) => {
-        const monthMatch = filterMonth ? record.bangChamCongKey.thang === parseInt(filterMonth) : true;
-        const yearMatch = filterYear ? record.bangChamCongKey.nam === parseInt(filterYear) : true;
-        const employeeIdMatch = filterEmployeeId ? record.bangChamCongKey.msnv.includes(filterEmployeeId) : true;
+        const monthMatch = filterMonth ? record.thang === parseInt(filterMonth) : true;
+        const yearMatch = filterYear ? record.nam === parseInt(filterYear) : true;
+        const employeeIdMatch = filterEmployeeId ? record.msnv.includes(filterEmployeeId) : true;
         return monthMatch && yearMatch && employeeIdMatch;
     });
 
@@ -57,50 +55,49 @@ const AdminAttendance = () => {
         <div className="admin-attendance">
             <h3 className="title">Bảng chấm công của nhân viên</h3>
 
-            {/* Filters for Month, Year, and Employee ID */}
+            {/* Filters */}
             <div className="filters">
-                    <div className="filter-group">
-                        <label htmlFor="month">Tháng:</label>
-                        <select
-                            id="month"
-                            value={filterMonth}
-                            onChange={(e) => setFilterMonth(e.target.value)}
-                        >
-                            <option value="">Tất cả</option>
-                            {[...Array(12).keys()].map((m) => (
-                                <option key={m + 1} value={m + 1}>
-                                    {m + 1}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="filter-group">
-                        <label htmlFor="year">Năm:</label>
-                        <select
-                            id="year"
-                            value={filterYear}
-                            onChange={(e) => setFilterYear(e.target.value)}
-                        >
-                            <option value="">Tất cả</option>
-                            {[...new Set(attendanceRecords.map((r) => r.bangChamCongKey.nam))].map((year) => (
-                                <option key={year} value={year}>
-                                    {year}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="filter-group">
-                        <label htmlFor="employeeId">Mã nhân viên:</label>
-                        <input
-                            id="employeeId"
-                            type="text"
-                            value={filterEmployeeId}
-                            onChange={(e) => setFilterEmployeeId(e.target.value)}
-                            placeholder="Nhập mã nhân viên"
-                        />
-                    </div>
+                <div className="filter-group">
+                    <label htmlFor="month">Tháng:</label>
+                    <select
+                        id="month"
+                        value={filterMonth}
+                        onChange={(e) => setFilterMonth(e.target.value)}
+                    >
+                        <option value="">Tất cả</option>
+                        {[...Array(12).keys()].map((m) => (
+                            <option key={m + 1} value={m + 1}>
+                                {m + 1}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="filter-group">
+                    <label htmlFor="year">Năm:</label>
+                    <select
+                        id="year"
+                        value={filterYear}
+                        onChange={(e) => setFilterYear(e.target.value)}
+                    >
+                        <option value="">Tất cả</option>
+                        {[...new Set(attendanceRecords.map((r) => r.nam))].map((year) => (
+                            <option key={year} value={year}>
+                                {year}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="filter-group">
+                    <label htmlFor="employeeId">Mã nhân viên:</label>
+                    <input
+                        id="employeeId"
+                        type="text"
+                        value={filterEmployeeId}
+                        onChange={(e) => setFilterEmployeeId(e.target.value)}
+                        placeholder="Nhập mã nhân viên"
+                    />
+                </div>
             </div>
-
 
             {/* Error and Loading */}
             {loading && <p>Đang tải dữ liệu...</p>}
@@ -123,10 +120,10 @@ const AdminAttendance = () => {
                     <tbody>
                         {visibleAttendance.map((record, index) => (
                             <tr key={index}>
-                                <td>{record.bangChamCongKey.msnv}</td>
-                                <td>{record.nhanVien.hoten}</td>
-                                <td>{record.bangChamCongKey.thang}</td>
-                                <td>{record.bangChamCongKey.nam}</td>
+                                <td>{record.msnv}</td>
+                                <td>{record.hoten}</td>
+                                <td>{record.thang}</td>
+                                <td>{record.nam}</td>
                                 <td>{record.sogioHienTai}</td>
                                 <td>{record.sogioToiThieu}</td>
                                 <td>{record.sogioLamThem}</td>
