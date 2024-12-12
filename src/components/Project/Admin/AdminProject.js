@@ -1,10 +1,9 @@
-// AdminProject.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminProject.css';
-import AddProject from './AddProject';  // Import AddProject
-import DeleteProject from './DeleteProject';  // Import DeleteProject
-import EditProject from './EditProject';  // Import EditProject
+import AddProject from './AddProject';  // Nếu AddProject được xuất khẩu mặc định
+import DeleteProject from './DeleteProject';  // Nhập khẩu đúng
+import EditProject from './EditProject';  // Nhập khẩu đúng
 
 const AdminProject = () => {
     const [projects, setProjects] = useState([]);
@@ -54,6 +53,7 @@ const AdminProject = () => {
                         <th>Tên Dự án</th>
                         <th>Mô Tả</th>
                         <th>Mã Phòng Ban Quản Lý</th>
+                        <th>Hành động</th> {/* Thêm cột cho hành động */}
                     </tr>
                 </thead>
                 <tbody>
@@ -66,8 +66,9 @@ const AdminProject = () => {
                             <td>{project.mota}</td>
                             <td>{project.mspb_quanly}</td>
                             <td>
-                            <EditProject mada={project.maDA} setProjects={setProjects} />
-                            <DeleteProject mada={project.maDA} setProjects={setProjects} />
+                                {/* Thêm nút xóa và sửa */}
+                                <DeleteProject mada={project.maDA} setProjects={setProjects} />
+                                <EditProject mada={project.maDA} setProjects={setProjects} />
                             </td>
                         </tr>
                     ))}
