@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 const Query8 = ({ onDataFetched }) => {
   const [formData, setFormData] = useState({ year: '', solan: '' });
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(''); // Đảm bảo khai báo này
-
+  const [errorMessage, setErrorMessage] = useState(''); // Error state
+  // const [fetchedData, setFetchedData] = useState([]); // To store the fetched data
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -13,7 +13,7 @@ const Query8 = ({ onDataFetched }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setErrorMessage(''); // Xóa lỗi cũ khi bắt đầu xử lý mới
+    setErrorMessage(''); // Reset error state when a new fetch is initiated
 
     try {
       const url = `http://localhost:8080/query/chitietkht?input_year=${encodeURIComponent(formData.year)}&solan=${encodeURIComponent(formData.solan)}`;
@@ -26,14 +26,18 @@ const Query8 = ({ onDataFetched }) => {
 
       const data = await response.json();
       console.log('Data fetched from API:', data);
-      onDataFetched(data);
+      onDataFetched(data); // Pass the fetched data to the parent component
+      // setFetchedData(data); // Save the fetched data locally to display
     } catch (error) {
       console.error('Error fetching data:', error);
-      setErrorMessage('Không thể kết nối tới máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.'); // Đặt thông báo lỗi
+      setErrorMessage('Không thể kết nối tới máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.');
     } finally {
       setLoading(false);
     }
   };
+
+  // Ensure onDataFetched is an array
+  const data = Array.isArray(onDataFetched) ? onDataFetched : [];
 
   return (
     <div className="query8-container">
@@ -65,7 +69,24 @@ const Query8 = ({ onDataFetched }) => {
           {loading ? 'Đang tải...' : 'Gửi'}
         </button>
       </form>
-      {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Hiển thị thông báo lỗi */}
+      {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error if any */}
+
+      {/* Display fetched data if available */}
+      {data.length > 0 && (
+        <div className="results">
+          <h3>Details:</h3>
+          <ul>
+            {data.map((item, index) => (
+              <li key={index}>
+                <p><strong>Employee ID:</strong> {item.msnv}</p>
+                <p><strong>Month:</strong> {item.thang}</p>
+                <p><strong>Minimum Time:</strong> {item.toithieu}</p>
+                <p><strong>Actual Time:</strong> {item.thucte}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };

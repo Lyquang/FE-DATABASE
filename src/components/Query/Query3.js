@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
 const Query3 = ({ onDataFetched }) => {
-  const [formData, setFormData] = useState({ dau: '', cuoi: '', nv: '' });
+  const [formData, setFormData] = useState({cuoi: '', dau: '',  nv: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -13,7 +14,7 @@ const Query3 = ({ onDataFetched }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError(''); // Reset error message
+    setErrorMessage('');
 
     const { dau, cuoi, nv } = formData;
 
@@ -32,23 +33,30 @@ const Query3 = ({ onDataFetched }) => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/query/viet2?cuoi=${cuoi}&dau=${dau}&nv=${nv}`
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        onDataFetched(data);
-      } else {
-        setError('Lỗi khi lấy dữ liệu: ' + response.status);
+      const url = `http://localhost:8080/query/viet2?cuoi=${encodeURIComponent(formData.cuoi)}&dau=${encodeURIComponent(formData.dau)}&nv=${encodeURIComponent(formData.nv)}`
+      console.log(`Fetching URL: ${url}`);  // Log URL to check
+  
+      const response = await fetch(url);
+      console.log("Query response:", response); // Log the response object
+  
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status}`);
       }
+  
+      const data = await response.json();
+      console.log('Data fetched from API:', data); // Log the actual data
+  
+      // Call onDataFetched callback with data
+      onDataFetched(data);
+      // setFetchedData(data); // Save the fetched data locally to display
     } catch (error) {
-      setError('Lỗi kết nối: ' + error.message);
+      console.error('Error fetching data:', error);
+      setErrorMessage('Không thể kết nối tới máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.');
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
-
+  // const data = Array.isArray(onDataFetched) ? onDataFetched : [];
   return (
     <div className="query3-container">
       <h2>Form Tính Giờ Làm Việc</h2>
@@ -91,8 +99,27 @@ const Query3 = ({ onDataFetched }) => {
           {loading ? 'Đang tải...' : 'Gửi'}
         </button>
       </form>
+      {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Show error if any */}
+
+      {/* Display fetched data if it exists */}
+      {/* {data.length > 0 && (
+        <div className="results">
+          <h3>Results:</h3>
+          <ul>
+            {data.map((item, index) => (
+              <li key={index}>
+                <p><strong>MSNV:</strong> {item.msnv}</p>
+                <p><strong>Họ tên:</strong> {item.hoten}</p>
+                <p><strong>Tổng giờ thiếu:</strong> {item.tong_gio_thieu}</p>
+                <p><strong>Số tháng thiếu:</strong> {item.sothangthieu}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )} */}
     </div>
   );
 };
 
 export default Query3;
+
