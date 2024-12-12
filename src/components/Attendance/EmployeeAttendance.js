@@ -1,59 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './AdminAttendance.scss';
+import './EmployeeAttendance.scss';
 
-const AdminAttendance = () => {
+const EmployeeAttendance = () => {
     const [attendanceRecords, setAttendanceRecords] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [filterMonth, setFilterMonth] = useState('');
     const [filterYear, setFilterYear] = useState('');
-    const [filterEmployeeId, setFilterEmployeeId] = useState('');
-
-    // Pagination state
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const [employeeId, setEmployeeId] = useState('');
 
     // Fetch attendance data from API
+    const fetchAttendanceData = async (employeeId) => {
+        setLoading(true);
+        setError('');
+        try {
+            const response = await axios.get(`http://localhost:8080/bangchamcong/nhanvien/all`, {
+                params: { msnv: employeeId },
+            });
+            const data = response.data || [];
+            setAttendanceRecords(data);
+        } catch (err) {
+            setError('Error fetching attendance data. Please try again.');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchAttendanceData = async () => {
-            setLoading(true);
-            setError('');
-            try {
-                const response = await axios.get('http://localhost:8080/bangchamcong-bangluong/getAll');
-                const data = response.data || [];
-                setAttendanceRecords(data);
-            } catch (err) {
-                setError('Error fetching attendance data. Please try again.');
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchAttendanceData();
-    }, []);
+        if (employeeId) {
+            fetchAttendanceData(employeeId);
+        }
+    }, [employeeId]);
 
     // Filter attendance data
     const filteredAttendance = attendanceRecords.filter((record) => {
         const monthMatch = filterMonth ? record.thang === parseInt(filterMonth) : true;
         const yearMatch = filterYear ? record.nam === parseInt(filterYear) : true;
-        const employeeIdMatch = filterEmployeeId ? record.msnv.includes(filterEmployeeId) : true;
-        return monthMatch && yearMatch && employeeIdMatch;
+        return monthMatch && yearMatch;
     });
 
-    // Pagination calculations
-    const totalPages = Math.ceil(filteredAttendance.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const visibleAttendance = filteredAttendance.slice(startIndex, endIndex);
-
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
+    const employeeInfo = attendanceRecords.length > 0 ? attendanceRecords[0] : null;
 
     return (
-        <div className="admin-attendance">
-            <h3 className="title">Bảng chấm công của nhân viên</h3>
+        <div className="employee-attendance">
+            <h3 className="title">Bảng chấm công cá nhân</h3>
+
+            {/* Employee ID Input */}
+            <div className="employee-id-input">
+                <label htmlFor="employeeId">Mã nhân viên:</label>
+                <input
+                    id="employeeId"
+                    type="text"
+                    value={employeeId}
+                    onChange={(e) => setEmployeeId(e.target.value)}
+                    placeholder="Nhập mã nhân viên"
+                />
+            </div>
 
             {/* Filters */}
             <div className="filters">
@@ -87,28 +91,24 @@ const AdminAttendance = () => {
                         ))}
                     </select>
                 </div>
-                <div className="filter-group">
-                    <label htmlFor="employeeId">Mã nhân viên:</label>
-                    <input
-                        id="employeeId"
-                        type="text"
-                        value={filterEmployeeId}
-                        onChange={(e) => setFilterEmployeeId(e.target.value)}
-                        placeholder="Nhập mã nhân viên"
-                    />
-                </div>
             </div>
 
             {loading && <p>Đang tải dữ liệu...</p>}
             {error && <p className="error">{error}</p>}
+
+            {/* Employee Info */}
+            {employeeInfo && (
+                <div className="employee-info">
+                    <p><strong>Mã nhân viên:</strong> {employeeInfo.msnv}</p>
+                    <p><strong>Tên nhân viên:</strong> {employeeInfo.hoten}</p>
+                </div>
+            )}
 
             {/* Attendance Table */}
             <div className="attendance-table">
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th>Mã nhân viên</th>
-                            <th>Tên nhân viên</th>
                             <th>Tháng</th>
                             <th>Năm</th>
                             <th>Số giờ hiện tại</th>
@@ -117,10 +117,8 @@ const AdminAttendance = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {visibleAttendance.map((record, index) => (
+                        {filteredAttendance.map((record, index) => (
                             <tr key={index}>
-                                <td>{record.msnv}</td>
-                                <td>{record.hoten}</td>
                                 <td>{record.thang}</td>
                                 <td>{record.nam}</td>
                                 <td>{record.sogioHienTai}</td>
@@ -131,21 +129,8 @@ const AdminAttendance = () => {
                     </tbody>
                 </table>
             </div>
-
-            {/* Pagination Controls */}
-            <div className="pagination">
-                {Array.from({ length: totalPages }, (_, i) => (
-                    <button
-                        key={i + 1}
-                        className={`page-button ${currentPage === i + 1 ? 'active' : ''}`}
-                        onClick={() => handlePageChange(i + 1)}
-                    >
-                        {i + 1}
-                    </button>
-                ))}
-            </div>
         </div>
     );
 };
 
-export default AdminAttendance;
+export default EmployeeAttendance;

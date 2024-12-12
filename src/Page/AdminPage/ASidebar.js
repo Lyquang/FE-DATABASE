@@ -73,9 +73,19 @@ function ASidebar({ expanded, toggleSidebar }) {
           <span className={`link-text ${expanded ? 'show' : ''}`}>Chấm công</span>
         </NavLink>
 
+        <NavLink to="employee-attendance" className="nav-link-side" activeClassName="active-link">
+          <PiNotePencilDuotone />
+          <span className={`link-text ${expanded ? 'show' : ''}`}>Chấm công của nhân viên</span>
+        </NavLink>
+
         <NavLink to="admin-salary" className="nav-link-side" activeClassName="active-link">
           <GrMoney />
-          <span className={`link-text ${expanded ? 'show' : ''}`}>Tiền lương và phúc lợi</span>
+          <span className={`link-text ${expanded ? 'show' : ''}`}>Tiền lương</span>
+        </NavLink>
+
+        <NavLink to="employee-salary" className="nav-link-side" activeClassName="active-link">
+          <GrMoney />
+          <span className={`link-text ${expanded ? 'show' : ''}`}>Tiền lương của nhân viên</span>
         </NavLink>
 
 

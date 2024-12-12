@@ -32,7 +32,7 @@ const AddEmployee = ({ onClose, refreshEmployees }) => {
             const queryParams = new URLSearchParams(formData).toString();
             const response = await axios.post(`http://localhost:8080/NVCT/them?${queryParams}`);
             if (response.status === 200) {
-                alert("Thêm nhân viên thành công!");
+                window.alert(` Response Data: ${JSON.stringify(response.data, null, 2)}`);
                 refreshEmployees();
                 onClose();
             } else {

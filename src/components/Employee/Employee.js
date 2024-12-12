@@ -54,11 +54,13 @@ const [showDelAddressForm, setShowDelAddressForm] = useState(false);
 
     // Fetch employees from the API
     const fetchEmployees = async () => {
+        console.log("pass");
         try {
             const response = await axios.get("http://localhost:8080/NVCT/getallnhanvien", {
                 headers: { "Content-Type": "application/json", Accept: "application/json" },
             });
             setEmployees(response.data);
+            console.log("pass",response);
         } catch (err) {
             console.error("Error fetching employees:", err);
             setError("Failed to load employee data. Please try again later.");

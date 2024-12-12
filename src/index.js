@@ -55,6 +55,8 @@ import EmployeeTraining from './components/Training/EmployeeTraining';
 import EmployeeChat from './components/Chat/EmployeeChat';
 import Participation from './components/Project/Employee/Participation';
 import Query from './components/Query/Query';
+import EmployeeAttendance from './components/Attendance/EmployeeAttendance';
+import EmployeeSalary from './components/Salary/EmployeeSalary';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -69,7 +71,9 @@ root.render(
           <Route index element={<ADashboard />}></Route>
           <Route path="employee" element={<Employee/>} />
           <Route path="admin-attendance" element={<AdminAttendance />} />
+          <Route path="employee-attendance" element={<EmployeeAttendance/>} />
           <Route path="admin-salary" element={<AdminSalary />} />
+          <Route path="employee-salary" element={<EmployeeSalary />} />
           <Route path="department" element={<Department />} />
           <Route path="project" element={<AdminProject />} />
 
