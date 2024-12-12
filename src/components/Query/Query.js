@@ -3,6 +3,7 @@ import Query1 from './Query1';
 import Query2 from './Query2';
 import Query3 from './Query3';
 import Query4 from './Query4';
+import Query5 from './Query5';
 import Query6 from './Query6';
 import Query7 from './Query7';
 import Query8 from './Query8';
@@ -183,6 +184,56 @@ const Query = () => {
         </>
       )}
 
+      {selectedEndpoint === 'viet3' && (
+        <>
+          <Query5 onDataFetched={handleDataFetched} />
+          {apiData && apiData.length > 0 ? (
+            <div className="result-container">
+              <h3>API Result</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Mã Nhân Viên</th>
+                    <th>Họ Tên</th>
+                    <th>Ngày Sinh</th>
+                    <th>Giới Tính</th>
+                    <th>CCCD</th>
+                    <th>Loại Nhân Viên</th>
+                    <th>Phòng Ban</th>
+                    <th>Chức Vụ</th>
+                    <th>Loại NV</th>
+                    <th>Lương Cơ Bản</th>
+                    <th>Tên Phòng Ban</th>
+                    <th>Start Date</th>
+                    <th>STT</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {apiData.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.nhanVien.msnv}</td>
+                      <td>{item.nhanVien.hoten}</td>
+                      <td>{item.nhanVien.ngaysinh}</td>
+                      <td>{item.nhanVien.gioitinh}</td>
+                      <td>{item.nhanVien.cccd}</td>
+                      <td>{item.nhanVien.loainhanvien}</td>
+                      <td>{item.nhanVien.mspb}</td>
+                      <td>{item.chucvu}</td>
+                      <td>{item.loainv}</td>
+                      <td>{item.luongcoban.toLocaleString()}</td>
+                      <td>{item.tenphongban}</td>
+                      <td>{item.startdate}</td>
+                      <td>{item.lichSuCVKey.stt}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p>No data available.</p>
+          )}
+        </>
+      )}
 
       {selectedEndpoint === 'phuong1' && (
         <>
