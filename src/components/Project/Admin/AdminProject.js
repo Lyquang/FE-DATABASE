@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminProject.css';
-import AddProject from './AddProject';  // Nếu AddProject được xuất khẩu mặc định
-import DeleteProject from './DeleteProject';  // Nhập khẩu đúng
-import EditProject from './EditProject';  // Nhập khẩu đúng
+import AddProject from './AddProject';
+import DeleteProject from './DeleteProject';
+import EditProject from './EditProject';
 
 const AdminProject = () => {
     const [projects, setProjects] = useState([]);
@@ -32,54 +32,56 @@ const AdminProject = () => {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="loading">Loading...</div>;
     }
 
     if (error) {
-        return <div>Error: {error}</div>;
+        return <div className="error">Error: {error}</div>;
     }
 
     return (
-        <div>
-            <h1>Danh sách Dự án</h1>
-            <button onClick={handleOpenModal}>Thêm Dự Án</button>
+        <div className="admin-project-container">
+            <header>
+                <h1>Danh sách Dự án</h1>
+                <button className="add-project-btn" onClick={handleOpenModal}>Thêm Dự Án</button>
+            </header>
 
-            <table border="1" cellPadding="10" cellSpacing="0">
-                <thead>
-                    <tr>
-                        <th>Mã Dự án</th>
-                        <th>Vốn Đầu Tư</th>
-                        <th>Ngày Bắt Đầu</th>
-                        <th>Tên Dự án</th>
-                        <th>Mô Tả</th>
-                        <th>Mã Phòng Ban Quản Lý</th>
-                        <th>Hành động</th> {/* Thêm cột cho hành động */}
-                    </tr>
-                </thead>
-                <tbody>
-                    {projects.map((project, index) => (
-                        <tr key={index}>
-                            <td>{project.maDA}</td>
-                            <td>{project.vondautu}</td>
-                            <td>{project.start_date}</td>
-                            <td>{project.ten_da}</td>
-                            <td>{project.mota}</td>
-                            <td>{project.mspb_quanly}</td>
-                            <td>
-                                {/* Thêm nút xóa và sửa */}
-                                <DeleteProject mada={project.maDA} setProjects={setProjects} />
-                                <EditProject mada={project.maDA} setProjects={setProjects} />
-                            </td>
+            <div className="table-container">
+                <table className="project-table">
+                    <thead>
+                        <tr>
+                            <th>Mã Dự án</th>
+                            <th>Vốn Đầu Tư</th>
+                            <th>Ngày Bắt Đầu</th>
+                            <th>Tên Dự án</th>
+                            <th>Mô Tả</th>
+                            <th>Mã Phòng Ban Quản Lý</th>
+                            <th>Hành động</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {projects.map((project, index) => (
+                            <tr key={index}>
+                                <td>{project.maDA}</td>
+                                <td>{project.vondautu}</td>
+                                <td>{project.start_date}</td>
+                                <td>{project.ten_da}</td>
+                                <td>{project.mota}</td>
+                                <td>{project.mspb_quanly}</td>
+                                <td className="actions">
+                                    <DeleteProject mada={project.maDA} setProjects={setProjects} />
+                                    <EditProject mada={project.maDA} setProjects={setProjects} />
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
-            {/* Modal */}
             <AddProject 
                 isModalOpen={isModalOpen}
                 handleCloseModal={handleCloseModal}
-                setProjects={setProjects} // Update project list when a new project is added
+                setProjects={setProjects}
             />
         </div>
     );

@@ -276,16 +276,16 @@ const EmployeeSalary = () => {
                                 <tr key={record.id}>
                                     <td>{record.thang}</td>
                                     <td>{record.nam}</td>
-                                    <td>{record.luongcb}</td>
-                                    <td>{record.luonglt}</td>
+                                    <td>{record.luongcoban}</td>
+                                    <td>{record.luonglamthem}</td>
                                     <td>{record.antrua}</td>
                                     <td>{record.xangxe}</td>
                                     <td>{record.hotrokhac}</td>
                                     <td>{record.bhxh}</td>
                                     <td>{record.bhyt}</td>
                                     <td>{record.thue}</td>
-                                    <td>{record.khoultru}</td>
-                                    <td>{record.luongtt}</td>
+                                    <td>{record.khautru}</td>
+                                    <td>{record.luongthucte}</td>
                                 </tr>
                             ))
                         )}
