@@ -1,31 +1,85 @@
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: white;
+.admin-project-container {
+    font-family: 'Arial', sans-serif;
+    max-width: 1500px;
+    margin: 0 auto;
     padding: 20px;
-    border-radius: 8px;
-    width: 500px;
-    max-width: 100%;
-    position: relative;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    color: #333;
 }
 
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #444;
+}
+
+.add-project-btn {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    color: #333;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.add-project-btn:hover {
+    background-color: #0056b3;
+}
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    padding: 10px;
+}
+
+.project-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.project-table th, .project-table td {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.project-table th {
+    background-color: #007BFF;
+    color: white;
+}
+
+.project-table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+.project-table tbody tr:hover {
+    background-color: #d0e8ff;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
 }
