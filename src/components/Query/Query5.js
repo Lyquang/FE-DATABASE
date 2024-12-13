@@ -45,7 +45,7 @@ const Query5 = ({ onDataFetched }) => {
   
   return (
     <div className="query5-container">
-      <h2>Query 5 Form</h2>
+      <h2>Form hiển thị lịch sử công việc của nhân viên</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="year">Mã số nhân viên:</label>

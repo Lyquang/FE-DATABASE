@@ -41,7 +41,7 @@ const Query8 = ({ onDataFetched }) => {
 
   return (
     <div className="query8-container">
-      <h2>Query 8 Form</h2>
+      <h2>Form hiển thị chi tiết các tháng thiếu của nhân viên trong năm</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="year">Năm:</label>

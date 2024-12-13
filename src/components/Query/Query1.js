@@ -30,7 +30,7 @@ const Query1 = ({ onDataFetched }) => {
 
   return (
     <div className="query1-container">
-      <h2>Query Form</h2>
+      <h2>Tìm tên, lương thực tế của nhân viên có lương thực tế cao nhất trong tháng a và năm b của phòng ban c có lương thực tế bé hơn d</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="t">T (Tháng):</label>

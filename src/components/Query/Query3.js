@@ -59,7 +59,7 @@ const Query3 = ({ onDataFetched }) => {
   // const data = Array.isArray(onDataFetched) ? onDataFetched : [];
   return (
     <div className="query3-container">
-      <h2>Form Tính Giờ Làm Việc</h2>
+      <h2>Form hiện ngày làm việc từ ngày bắt đầu đến ngày kết thúc</h2>
       <form onSubmit={handleSubmit}>
         {error && <div className="error-message">{error}</div>}
         <div className="form-group">

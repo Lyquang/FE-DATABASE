@@ -44,7 +44,7 @@ const Query6 = ({ onDataFetched }) => {
 
   return (
     <div className="query6-container">
-      <h2>Query 6 Form</h2>
+      <h2>Form tính tổng lương làm thêm các tháng của tất cả nhân viên trong năm</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="year">Năm:</label>

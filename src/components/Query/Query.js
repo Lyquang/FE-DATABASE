@@ -15,14 +15,14 @@ const Query = () => {
   const [apiData, setApiData] = useState(null);
 
   const endpoints = [
-    { value: 'manhcuong1', label: 'Tìm tên, lương thực tế của nhân viên...' },
-    { value: 'caculate_salary_to_pay', label: 'GET 124 tinhluong+lamthem' },
-    { value: 'viet2', label: 'GET 1.2.4listngay(gọi chung cái n...)' },
-    { value: 'viet22', label: 'GET 124tinhgiolam' },
-    { value: 'viet3', label: 'GET 123lscongviec' },
-    { value: 'phuong1', label: 'GET 1.2.3SumLamthem' },
-    { value: 'kohoanthanh', label: 'GET kht' },
-    { value: 'chitietkht', label: 'GET chitiet(gọi chung kht)' }
+    { value: 'manhcuong1', label: 'Tìm tên, lương thực tế của nhân viên có lương thực tế cao nhất trong tháng a và năm b của phòng ban c có lương thực tế bé hơn d' },
+    { value: 'caculate_salary_to_pay', label: 'Tính tổng số tiền phải trả cho toàn bộ nhân viên trong tháng năm nào đó' },
+    { value: 'viet2', label: 'Form hiện ngày làm việc từ ngày bắt đầu đến ngày kết thúc' },
+    { value: 'viet22', label: 'Form Tính Giờ Làm Việc' },
+    { value: 'viet3', label: 'Form hiển thị lịch sử công việc của nhân viên' },
+    { value: 'phuong1', label: 'Form tính tổng lương làm thêm các tháng của tất cả nhân viên trong năm' },
+    { value: 'kohoanthanh', label: 'Form tính số giờ thiếu và số tháng thiếu của các nhân viên trong năm' },
+    { value: 'chitietkht', label: 'Form hiển thị chi tiết các tháng thiếu của nhân viên trong năm' }
   ];
 
   const handleSelectChange = (event) => {
@@ -46,11 +46,11 @@ const Query = () => {
 
   return (
     <div className="query-container">
-      <h2>Query API</h2>
+      <h2>Query</h2>
       <div className="form-group">
-        <label htmlFor="endpoint">Select an endpoint:</label>
+        <label htmlFor="endpoint">Hãy chọn câu truy vấn</label>
         <select id="endpoint" onChange={handleSelectChange} value={selectedEndpoint}>
-          <option value="">Choose an option</option>
+          <option value="">Hãy chọn một phương án</option>
           {endpoints.map((endpoint) => (
             <option key={endpoint.value} value={endpoint.value}>
               {endpoint.label}
@@ -65,7 +65,7 @@ const Query = () => {
           <Query1 onDataFetched={handleDataFetched} />
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
-              <h3>API Result</h3>
+              <h3>Kết quả truy vấn</h3>
               <table>
                 <thead>
                   <tr>
@@ -88,7 +88,7 @@ const Query = () => {
               </table>
             </div>
           ) : (
-            <p>No data available.</p>
+            <p></p>
           )}
         </>
       )}
@@ -98,7 +98,7 @@ const Query = () => {
           <Query2 onDataFetched={handleDataFetched} />
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
-              <h3>API Result</h3>
+              <h3>Kết quả truy vấn</h3>
               <table>
                 <thead>
                   <tr>
@@ -115,7 +115,7 @@ const Query = () => {
               </table>
             </div>
           ) : (
-            <p>No data available.</p>
+            <p></p>
           )}
         </>
       )}
@@ -125,11 +125,11 @@ const Query = () => {
           <Query4 onDataFetched={handleDataFetched} />
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
-              <h3>API Result</h3>
+              <h3>Kết quả truy vấn</h3>
               <table>
                 <thead>
                   <tr>
-                    <th>Time</th>
+                    <th>Thời gian làm việc</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -142,7 +142,7 @@ const Query = () => {
               </table>
             </div>
           ) : (
-            <p>No data available.</p>
+            <p></p>
           )}
         </>
       )}
@@ -152,7 +152,7 @@ const Query = () => {
           <Query3 onDataFetched={handleDataFetched} />
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
-              <h3>API Result</h3>
+              <h3>Kết quả truy vấn</h3>
               <table>
                 <thead>
                   <tr>
@@ -179,7 +179,7 @@ const Query = () => {
               </table>
             </div>
           ) : (
-            <p>No data available.</p>
+            <p></p>
           )}
         </>
       )}
@@ -189,7 +189,7 @@ const Query = () => {
           <Query5 onDataFetched={handleDataFetched} />
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
-              <h3>API Result</h3>
+              <h3>Kết quả truy vấn</h3>
               <table>
                 <thead>
                   <tr>
@@ -230,7 +230,7 @@ const Query = () => {
               </table>
             </div>
           ) : (
-            <p>No data available.</p>
+            <p></p>
           )}
         </>
       )}
@@ -240,7 +240,7 @@ const Query = () => {
           <Query6 onDataFetched={handleDataFetched} />
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
-              <h3>API Result</h3>
+              <h3>Kết quả truy vấn</h3>
               <table>
                 <thead>
                   <tr>
@@ -261,7 +261,7 @@ const Query = () => {
               </table>
             </div>
           ) : (
-            <p>No data available.</p>
+            <p></p>
           )}
         </>
       )}
@@ -271,7 +271,7 @@ const Query = () => {
           <Query7 onDataFetched={handleDataFetched} />
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
-              <h3>API Result</h3>
+              <h3>Kết quả truy vấn</h3>
               <table>
                 <thead>
                   <tr>
@@ -294,7 +294,7 @@ const Query = () => {
               </table>
             </div>
           ) : (
-            <p>No data available.</p>
+            <p></p>
           )}
         </>
       )}
@@ -304,7 +304,7 @@ const Query = () => {
           <Query8 onDataFetched={handleDataFetched} />
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
-              <h3>API Result</h3>
+              <h3>Kết quả truy vấn</h3>
               <table>
                 <thead>
                   <tr>
@@ -327,7 +327,7 @@ const Query = () => {
               </table>
             </div>
           ) : (
-            <p>No data available.</p>
+            <p></p>
           )}
         </>
       )}
