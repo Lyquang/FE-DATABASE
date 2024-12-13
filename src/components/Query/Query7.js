@@ -59,7 +59,7 @@ const Query7 = ({ onDataFetched }) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="solan">Số lần:</label>
+          <label htmlFor="solan">Số lần tối thiểu:</label>
           <input
             type="number"
             id="solan"

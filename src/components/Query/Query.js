@@ -13,6 +13,8 @@ import './Query.scss';
 const Query = () => {
   const [selectedEndpoint, setSelectedEndpoint] = useState('');
   const [apiData, setApiData] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Number of items per page
 
   const endpoints = [
     { value: 'manhcuong1', label: 'Tìm tên, lương thực tế của nhân viên có lương thực tế cao nhất trong tháng a và năm b của phòng ban c có lương thực tế bé hơn d' },
@@ -28,6 +30,7 @@ const Query = () => {
   const handleSelectChange = (event) => {
     setSelectedEndpoint(event.target.value);
     setApiData(null);  // Reset apiData when a new endpoint is selected
+    setCurrentPage(1); // Reset to first page
   };
 
   const handleDataFetched = (data) => {
@@ -42,6 +45,20 @@ const Query = () => {
     } else {
       setApiData([]);  // If no data is fetched, set it as an empty array
     }
+  };
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(1); // Reset to the first page when items per page change
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = apiData ? apiData.slice(indexOfFirstItem, indexOfLastItem) : [];
+
+  const totalPages = apiData ? Math.ceil(apiData.length / itemsPerPage) : 0;
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   return (
@@ -66,13 +83,25 @@ const Query = () => {
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
               <h3>Kết quả truy vấn</h3>
+              {/* <div className="pagination-controls">
+                <label htmlFor="itemsPerPage">Số hàng hiển thị:</label>
+                <select
+                  id="itemsPerPage"
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div> */}
               <table>
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>ID</th>
-                    <th>Salary</th>
-                    <th>Department ID</th>
+                    <th>Họ và tên</th>
+                    <th>Mã nhân viên</th>
+                    <th>Tiền lương</th>
+                    <th>Mã phòng ban ID</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -86,6 +115,31 @@ const Query = () => {
                   ))}
                 </tbody>
               </table>
+              {/* <div className="pagination">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  Previous
+                </button>
+                {[...Array(totalPages).keys()]
+                  .filter((page) => page * itemsPerPage < apiData.length)
+                  .map((page) => (
+                    <button
+                      key={page}
+                      className={currentPage === page + 1 ? 'active' : ''}
+                      onClick={() => handlePageChange(page + 1)}
+                    >
+                      {page + 1}
+                    </button>
+                  ))}
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </div> */}
             </div>
           ) : (
             <p></p>
@@ -99,10 +153,22 @@ const Query = () => {
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
               <h3>Kết quả truy vấn</h3>
+              {/* <div className="pagination-controls">
+                <label htmlFor="itemsPerPage">Số hàng hiển thị:</label>
+                <select
+                  id="itemsPerPage"
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div> */}
               <table>
                 <thead>
                   <tr>
-                    <th>Salary_to_pay</th>
+                    <th>Số tiền phải trả</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -113,6 +179,31 @@ const Query = () => {
                   ))}
                 </tbody>
               </table>
+              {/* <div className="pagination">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  Previous
+                </button>
+                {[...Array(totalPages).keys()]
+                  .filter((page) => page * itemsPerPage < apiData.length)
+                  .map((page) => (
+                    <button
+                      key={page}
+                      className={currentPage === page + 1 ? 'active' : ''}
+                      onClick={() => handlePageChange(page + 1)}
+                    >
+                      {page + 1}
+                    </button>
+                  ))}
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </div> */}
             </div>
           ) : (
             <p></p>
@@ -126,6 +217,18 @@ const Query = () => {
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
               <h3>Kết quả truy vấn</h3>
+              {/* <div className="pagination-controls">
+                <label htmlFor="itemsPerPage">Số hàng hiển thị:</label>
+                <select
+                  id="itemsPerPage"
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div> */}
               <table>
                 <thead>
                   <tr>
@@ -140,6 +243,7 @@ const Query = () => {
                   ))}
                 </tbody>
               </table>
+              
             </div>
           ) : (
             <p></p>
@@ -153,6 +257,18 @@ const Query = () => {
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
               <h3>Kết quả truy vấn</h3>
+              {/* <div className="pagination-controls">
+                <label htmlFor="itemsPerPage">Số hàng hiển thị:</label>
+                <select
+                  id="itemsPerPage"
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div> */}
               <table>
                 <thead>
                   <tr>
@@ -177,6 +293,31 @@ const Query = () => {
                   ))}
                 </tbody>
               </table>
+              {/* <div className="pagination">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  Previous
+                </button>
+                {[...Array(totalPages).keys()]
+                  .filter((page) => page * itemsPerPage < apiData.length)
+                  .map((page) => (
+                    <button
+                      key={page}
+                      className={currentPage === page + 1 ? 'active' : ''}
+                      onClick={() => handlePageChange(page + 1)}
+                    >
+                      {page + 1}
+                    </button>
+                  ))}
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </div> */}
             </div>
           ) : (
             <p></p>
@@ -190,9 +331,22 @@ const Query = () => {
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
               <h3>Kết quả truy vấn</h3>
+              {/* <div className="pagination-controls">
+                <label htmlFor="itemsPerPage">Số hàng hiển thị:</label>
+                <select
+                  id="itemsPerPage"
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div> */}
               <table>
                 <thead>
                   <tr>
+                    <th>STT</th>
                     <th>Mã Nhân Viên</th>
                     <th>Họ Tên</th>
                     <th>Ngày Sinh</th>
@@ -204,13 +358,13 @@ const Query = () => {
                     <th>Loại NV</th>
                     <th>Lương Cơ Bản</th>
                     <th>Tên Phòng Ban</th>
-                    <th>Start Date</th>
-                    <th>STT</th>
+                    <th>Ngày bắt đầu</th>
                   </tr>
                 </thead>
                 <tbody>
                   {apiData.map((item, index) => (
                     <tr key={index}>
+                      <td>{item.lichSuCVKey.stt}</td>
                       <td>{item.nhanVien.msnv}</td>
                       <td>{item.nhanVien.hoten}</td>
                       <td>{item.nhanVien.ngaysinh}</td>
@@ -223,11 +377,35 @@ const Query = () => {
                       <td>{item.luongcoban.toLocaleString()}</td>
                       <td>{item.tenphongban}</td>
                       <td>{item.startdate}</td>
-                      <td>{item.lichSuCVKey.stt}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              {/* <div className="pagination">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  Previous
+                </button>
+                {[...Array(totalPages).keys()]
+                  .filter((page) => page * itemsPerPage < apiData.length)
+                  .map((page) => (
+                    <button
+                      key={page}
+                      className={currentPage === page + 1 ? 'active' : ''}
+                      onClick={() => handlePageChange(page + 1)}
+                    >
+                      {page + 1}
+                    </button>
+                  ))}
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </div> */}
             </div>
           ) : (
             <p></p>
@@ -241,6 +419,18 @@ const Query = () => {
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
               <h3>Kết quả truy vấn</h3>
+              {/* <div className="pagination-controls">
+                <label htmlFor="itemsPerPage">Số hàng hiển thị:</label>
+                <select
+                  id="itemsPerPage"
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div> */}
               <table>
                 <thead>
                   <tr>
@@ -259,6 +449,31 @@ const Query = () => {
                   ))}
                 </tbody>
               </table>
+              {/* <div className="pagination">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  Previous
+                </button>
+                {[...Array(totalPages).keys()]
+                  .filter((page) => page * itemsPerPage < apiData.length)
+                  .map((page) => (
+                    <button
+                      key={page}
+                      className={currentPage === page + 1 ? 'active' : ''}
+                      onClick={() => handlePageChange(page + 1)}
+                    >
+                      {page + 1}
+                    </button>
+                  ))}
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </div> */}
             </div>
           ) : (
             <p></p>
@@ -272,6 +487,18 @@ const Query = () => {
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
               <h3>Kết quả truy vấn</h3>
+              {/* <div className="pagination-controls">
+                <label htmlFor="itemsPerPage">Số hàng hiển thị:</label>
+                <select
+                  id="itemsPerPage"
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div> */}
               <table>
                 <thead>
                   <tr>
@@ -292,6 +519,31 @@ const Query = () => {
                   ))}
                 </tbody>
               </table>
+              {/* <div className="pagination">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  Previous
+                </button>
+                {[...Array(totalPages).keys()]
+                  .filter((page) => page * itemsPerPage < apiData.length)
+                  .map((page) => (
+                    <button
+                      key={page}
+                      className={currentPage === page + 1 ? 'active' : ''}
+                      onClick={() => handlePageChange(page + 1)}
+                    >
+                      {page + 1}
+                    </button>
+                  ))}
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </div> */}
             </div>
           ) : (
             <p></p>
@@ -305,6 +557,18 @@ const Query = () => {
           {apiData && apiData.length > 0 ? (
             <div className="result-container">
               <h3>Kết quả truy vấn</h3>
+              {/* <div className="pagination-controls">
+                <label htmlFor="itemsPerPage">Số hàng hiển thị:</label>
+                <select
+                  id="itemsPerPage"
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div> */}
               <table>
                 <thead>
                   <tr>
@@ -325,6 +589,31 @@ const Query = () => {
                   ))}
                 </tbody>
               </table>
+              {/* <div className="pagination">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  Previous
+                </button>
+                {[...Array(totalPages).keys()]
+                  .filter((page) => page * itemsPerPage < apiData.length)
+                  .map((page) => (
+                    <button
+                      key={page}
+                      className={currentPage === page + 1 ? 'active' : ''}
+                      onClick={() => handlePageChange(page + 1)}
+                    >
+                      {page + 1}
+                    </button>
+                  ))}
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </div> */}
             </div>
           ) : (
             <p></p>
